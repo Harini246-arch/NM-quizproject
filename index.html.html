@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IBM Online Quiz Application</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .quiz-container {
+      background: white;
+      border-radius: 8px;
+      width: 400px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .quiz-header {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    h2 {
+      color: #0b62a4;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .options label {
+      display: block;
+      background: #eef3f8;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options input {
+      margin-right: 10px;
+    }
+    .options label:hover {
+      background: #d7e7f3;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0b62a4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #094d80;
+    }
+    #result {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #0b62a4;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <h2>IBM Online Quiz</h2>
+      <p>Answer the following questions:</p>
+    </div>
+    <div id="quiz"></div>
+    <button id="submit">Submit</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "What does IBM stand for?",
+        a: "International Business Machines",
+        b: "Internet Business Management",
+        c: "Innovative Business Model",
+        d: "Intelligent Binary Machine",
+        correct: "a"
+      },
+      {
+        question: "Which year was IBM founded?",
+        a: "1911",
+        b: "1921",
+        c: "1945",
+        d: "1956",
+        correct: "a"
+      },
+      {
+        question: "IBM's AI platform is called?",
+        a: "DeepMind",
+        b: "Watson",
+        c: "TensorFlow",
+        d: "Azure AI",
+        correct: "b"
+      },
+      {
+        question: "Where is IBM's headquarters located?",
+        a: "San Francisco, USA",
+        b: "Armonk, New York, USA",
+        c: "Seattle, USA",
+        d: "Austin, Texas, USA",
+        correct: "b"
+      }
+    ];
+
+    const quiz = document.getElementById("quiz");
+    const result = document.getElementById("result");
+    const submitBtn = document.getElementById("submit");
+
+    let currentQuiz = 0;
+    let score = 0;
+
+    function loadQuiz() {
+      const currentQuizData = quizData[currentQuiz];
+      quiz.innerHTML = `
+        <div class="question">${currentQuizData.question}</div>
+        <div class="options">
+          <label><input type="radio" name="answer" value="a"> ${currentQuizData.a}</label>
+          <label><input type="radio" name="answer" value="b"> ${currentQuizData.b}</label>
+          <label><input type="radio" name="answer" value="c"> ${currentQuizData.c}</label>
+          <label><input type="radio" name="answer" value="d"> ${currentQuizData.d}</label>
+        </div>
+      `;
+    }
+
+    loadQuiz();
+
+    submitBtn.addEventListener("click", () => {
+      const answer = document.querySelector('input[name="answer"]:checked');
+      if (!answer) {
+        alert("Please select an answer before submitting!");
+        return;
+      }
+
+      if (answer.value === quizData[currentQuiz].correct) {
+        score++;
+      }
+
+      currentQuiz++;
+
+      if (currentQuiz < quizData.length) {
+        loadQuiz();
+      } else {
+        quiz.innerHTML = "";
+        submitBtn.style.display = "none";
+        result.innerHTML = `You scored ${score} out of ${quizData.length}! 🎉`;
+      }
+    });
+  </script>
+</body>
+</html>
